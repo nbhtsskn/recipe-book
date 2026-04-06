@@ -1,6 +1,64 @@
 # Recipe Book — Claude への指示
 
-## ユーザーがYouTube URLを送ってきたときの手順
+---
+
+## ユーザーがプレイリストURLを送ってきたときの手順
+
+### Step 1: 全動画データを一括取得
+
+```bash
+cd c:/Users/sasak/project
+python batch_fetch.py "<PLAYLIST_URL>"
+```
+
+これで `batch_data/` 以下に各動画のmeta.json・subtitles.jsonが保存され、
+`batch_data/pending.json` に未処理の動画IDリストが作られる。
+
+### Step 2: pending.jsonを読んで動画を1本ずつ分析
+
+```bash
+python -c "import json; print(json.load(open('c:/Users/sasak/project/batch_data/pending.json')))"
+```
+
+pending.jsonのIDを順番に処理する。各IDに対して以下を実行：
+
+```bash
+# meta情報を読む
+# Read: c:/Users/sasak/project/batch_data/{video_id}/meta.json
+# Read: c:/Users/sasak/project/batch_data/{video_id}/subtitles.json (または subtitles/{lang}キー)
+```
+
+内容を分析し、通常の1本処理と同じスキーマでJSONを作成して
+`c:/Users/sasak/project/recipes/{video_id}.json` に保存する。
+
+その後 `make_recipe.py` でHTML生成：
+
+```bash
+python -c "
+import json, sys
+sys.path.insert(0,'c:/Users/sasak/project')
+from make_recipe import save_recipe
+with open('c:/Users/sasak/project/recipes/{video_id}.json', encoding='utf-8') as f:
+    r = json.load(f)
+save_recipe(r)
+"
+```
+
+### Step 3: 全動画の処理が完了したらまとめてpush
+
+```bash
+python c:/Users/sasak/project/push_recipe.py
+```
+
+その後 batch_data/ を削除してクリーンアップ：
+
+```bash
+python -c "import shutil; shutil.rmtree('c:/Users/sasak/project/batch_data', ignore_errors=True)"
+```
+
+---
+
+## ユーザーがYouTube URLを送ってきたときの手順（1本）
 
 以下の手順を必ず順番通りに実行すること。
 
