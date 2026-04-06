@@ -23,6 +23,7 @@
       <button class="sort-btn" data-sort="upload_date">投稿日</button>
       <button class="sort-btn" data-sort="channel">チャンネル</button>
       <button class="sort-btn" data-sort="duration_seconds">動画時間</button>
+      <button class="random-btn" id="random-btn">🎲 ランダム</button>
     </div>
     <p class="section-title">レシピ一覧 <span id="recipe-count"></span></p>
     <div class="recipe-grid" id="recipe-grid"></div>
@@ -2503,6 +2504,13 @@
         currentSort=btn.dataset.sort;
         renderGrid(getFiltered());
       });
+    });
+
+    document.getElementById("random-btn").addEventListener("click",function(){
+      var list=getFiltered();
+      if(!list.length) return;
+      var r=list[Math.floor(Math.random()*list.length)];
+      window.location.href="recipes/"+r.id+".html";
     });
 
     renderGrid(getFiltered());
