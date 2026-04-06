@@ -66,7 +66,7 @@ def build_html(r):
     cards = []
     for s in r.get("steps", []):
         pt = (
-            f'<div class="step-point"><span class="point-label">💡 ポイント</span>{esc(s["point"])}</div>'
+            f'<div class="step-point">{esc(s["point"])}</div>'
             if s.get("point") else ""
         )
         cards.append(
