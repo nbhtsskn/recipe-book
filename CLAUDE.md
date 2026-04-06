@@ -77,6 +77,7 @@ yt-dlp --skip-download --write-auto-subs --sub-format vtt --sub-langs "ja,en,zh,
 - `steps.point`: なぜそうするのか、どんな効果があるのか、失敗しないコツを具体的に書く。動画内で強調されていた情報を優先する。字幕から読み取れる料理人のこだわりや理由を含める。
 - 言語は動画の言語に関係なく、`steps.text` と `steps.point` は**日本語で書く**。
 - `tags` は料理名・調理法・食材・チャンネル名などを5〜8個。
+- `description` と `subtitles` はJSONに保存するが、HTMLには表示しない（make_recipe.pyが非表示で処理）。
 
 ### Step 5: JSONをファイルに書き込む
 
