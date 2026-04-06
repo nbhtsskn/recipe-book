@@ -5,7 +5,9 @@
     "channel": "ファビオ飯 / イタリア料理人の世界",
     "thumbnail": "https://i.ytimg.com/vi/qgc9MqkMrsI/maxresdefault.jpg",
     "duration": "9:34",
+    "duration_seconds": 574,
     "added_at": "2026-04-06",
+    "upload_date": "2023-07-13",
     "tags": [
       "カルボナーラ",
       "パスタ",
@@ -14,7 +16,9 @@
       "イタリアン",
       "フライパン一つ"
     ],
-    "url": "https://www.youtube.com/watch?v=qgc9MqkMrsI"
+    "url": "https://www.youtube.com/watch?v=qgc9MqkMrsI",
+    "view_count": 550573,
+    "like_count": 8886
   },
   {
     "id": "NtjPlr_-W18",
@@ -22,7 +26,9 @@
     "channel": "料理研究家リュウジのバズレシピ",
     "thumbnail": "https://i.ytimg.com/vi/NtjPlr_-W18/maxresdefault.jpg",
     "duration": "13:01",
+    "duration_seconds": 781,
     "added_at": "2026-04-06",
+    "upload_date": "2020-10-04",
     "tags": [
       "カルボナーラ",
       "パスタ",
@@ -32,7 +38,9 @@
       "イタリアン",
       "卵"
     ],
-    "url": "https://www.youtube.com/watch?v=NtjPlr_-W18"
+    "url": "https://www.youtube.com/watch?v=NtjPlr_-W18",
+    "view_count": 4662354,
+    "like_count": 52735
   },
   {
     "id": "xGKn7TD9jaM",
@@ -40,7 +48,9 @@
     "channel": "料理研究家リュウジのバズレシピ",
     "thumbnail": "https://i.ytimg.com/vi/xGKn7TD9jaM/maxresdefault.jpg",
     "duration": "10:15",
+    "duration_seconds": 615,
     "added_at": "2026-04-06",
+    "upload_date": "2020-08-09",
     "tags": [
       "唐揚げ",
       "から揚げ",
@@ -50,7 +60,9 @@
       "鶏肉",
       "揚げ物"
     ],
-    "url": "https://www.youtube.com/watch?v=xGKn7TD9jaM"
+    "url": "https://www.youtube.com/watch?v=xGKn7TD9jaM",
+    "view_count": 13859035,
+    "like_count": 163247
   },
   {
     "id": "BcKNwo7bzJ4",
@@ -58,7 +70,9 @@
     "channel": "料理研究家リュウジのバズレシピ",
     "thumbnail": "https://i.ytimg.com/vi/BcKNwo7bzJ4/sddefault.jpg",
     "duration": "15:11",
+    "duration_seconds": 911,
     "added_at": "2026-04-06",
+    "upload_date": "2020-11-04",
     "tags": [
       "カレー",
       "至高シリーズ",
@@ -69,7 +83,9 @@
       "豚肉",
       "玉ねぎ"
     ],
-    "url": "https://www.youtube.com/watch?v=BcKNwo7bzJ4"
+    "url": "https://www.youtube.com/watch?v=BcKNwo7bzJ4",
+    "view_count": 13992227,
+    "like_count": 130169
   },
   {
     "id": "EmCPHumbMvo",
@@ -77,7 +93,9 @@
     "channel": "料理研究家リュウジのバズレシピ",
     "thumbnail": "https://i.ytimg.com/vi/EmCPHumbMvo/maxresdefault.jpg",
     "duration": "13:30",
+    "duration_seconds": 810,
     "added_at": "2026-04-06",
+    "upload_date": "2020-02-19",
     "tags": [
       "炒飯",
       "チャーハン",
@@ -86,6 +104,8 @@
       "バズレシピ",
       "至高シリーズ"
     ],
-    "url": "https://www.youtube.com/watch?v=EmCPHumbMvo"
+    "url": "https://www.youtube.com/watch?v=EmCPHumbMvo",
+    "view_count": 14646985,
+    "like_count": 165501
   }
 ]

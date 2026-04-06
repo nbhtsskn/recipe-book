@@ -99,6 +99,33 @@ body {
   font-weight: 600;
 }
 
+.sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+}
+.sort-label {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.sort-btn {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  background: var(--card-bg);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  transition: all 0.15s;
+}
+.sort-btn:hover { border-color: var(--accent); color: var(--accent); }
+.sort-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
 .empty-state {
   text-align: center;
   padding: 4rem 2rem;

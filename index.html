@@ -15,6 +15,15 @@
     </div>
   </header>
   <main class="main-content">
+    <div class="sort-bar">
+      <span class="sort-label">並び替え：</span>
+      <button class="sort-btn active" data-sort="added_at">追加日</button>
+      <button class="sort-btn" data-sort="view_count">再生回数</button>
+      <button class="sort-btn" data-sort="like_count">いいね数</button>
+      <button class="sort-btn" data-sort="upload_date">投稿日</button>
+      <button class="sort-btn" data-sort="channel">チャンネル</button>
+      <button class="sort-btn" data-sort="duration_seconds">動画時間</button>
+    </div>
     <p class="section-title">レシピ一覧 <span id="recipe-count"></span></p>
     <div class="recipe-grid" id="recipe-grid"></div>
     <div class="empty-state" id="empty-state" style="display:none">
@@ -30,7 +39,9 @@
     "channel": "ファビオ飯 / イタリア料理人の世界",
     "thumbnail": "https://i.ytimg.com/vi/qgc9MqkMrsI/maxresdefault.jpg",
     "duration": "9:34",
+    "duration_seconds": 574,
     "added_at": "2026-04-06",
+    "upload_date": "2023-07-13",
     "tags": [
       "カルボナーラ",
       "パスタ",
@@ -39,7 +50,9 @@
       "イタリアン",
       "フライパン一つ"
     ],
-    "url": "https://www.youtube.com/watch?v=qgc9MqkMrsI"
+    "url": "https://www.youtube.com/watch?v=qgc9MqkMrsI",
+    "view_count": 550573,
+    "like_count": 8886
   },
   {
     "id": "NtjPlr_-W18",
@@ -47,7 +60,9 @@
     "channel": "料理研究家リュウジのバズレシピ",
     "thumbnail": "https://i.ytimg.com/vi/NtjPlr_-W18/maxresdefault.jpg",
     "duration": "13:01",
+    "duration_seconds": 781,
     "added_at": "2026-04-06",
+    "upload_date": "2020-10-04",
     "tags": [
       "カルボナーラ",
       "パスタ",
@@ -57,7 +72,9 @@
       "イタリアン",
       "卵"
     ],
-    "url": "https://www.youtube.com/watch?v=NtjPlr_-W18"
+    "url": "https://www.youtube.com/watch?v=NtjPlr_-W18",
+    "view_count": 4662354,
+    "like_count": 52735
   },
   {
     "id": "xGKn7TD9jaM",
@@ -65,7 +82,9 @@
     "channel": "料理研究家リュウジのバズレシピ",
     "thumbnail": "https://i.ytimg.com/vi/xGKn7TD9jaM/maxresdefault.jpg",
     "duration": "10:15",
+    "duration_seconds": 615,
     "added_at": "2026-04-06",
+    "upload_date": "2020-08-09",
     "tags": [
       "唐揚げ",
       "から揚げ",
@@ -75,7 +94,9 @@
       "鶏肉",
       "揚げ物"
     ],
-    "url": "https://www.youtube.com/watch?v=xGKn7TD9jaM"
+    "url": "https://www.youtube.com/watch?v=xGKn7TD9jaM",
+    "view_count": 13859035,
+    "like_count": 163247
   },
   {
     "id": "BcKNwo7bzJ4",
@@ -83,7 +104,9 @@
     "channel": "料理研究家リュウジのバズレシピ",
     "thumbnail": "https://i.ytimg.com/vi/BcKNwo7bzJ4/sddefault.jpg",
     "duration": "15:11",
+    "duration_seconds": 911,
     "added_at": "2026-04-06",
+    "upload_date": "2020-11-04",
     "tags": [
       "カレー",
       "至高シリーズ",
@@ -94,7 +117,9 @@
       "豚肉",
       "玉ねぎ"
     ],
-    "url": "https://www.youtube.com/watch?v=BcKNwo7bzJ4"
+    "url": "https://www.youtube.com/watch?v=BcKNwo7bzJ4",
+    "view_count": 13992227,
+    "like_count": 130169
   },
   {
     "id": "EmCPHumbMvo",
@@ -102,7 +127,9 @@
     "channel": "料理研究家リュウジのバズレシピ",
     "thumbnail": "https://i.ytimg.com/vi/EmCPHumbMvo/maxresdefault.jpg",
     "duration": "13:30",
+    "duration_seconds": 810,
     "added_at": "2026-04-06",
+    "upload_date": "2020-02-19",
     "tags": [
       "炒飯",
       "チャーハン",
@@ -111,32 +138,76 @@
       "バズレシピ",
       "至高シリーズ"
     ],
-    "url": "https://www.youtube.com/watch?v=EmCPHumbMvo"
+    "url": "https://www.youtube.com/watch?v=EmCPHumbMvo",
+    "view_count": 14646985,
+    "like_count": 165501
   }
 ];
+    var currentSort = "added_at";
+    var currentQuery = "";
+
     function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+
+    function fmtNum(n){
+      if(n==null) return "";
+      n=parseInt(n);
+      if(n>=100000000) return (n/100000000).toFixed(1)+"億";
+      if(n>=10000) return Math.floor(n/10000)+"万";
+      return n.toLocaleString();
+    }
+
+    function sortRecipes(recipes, key){
+      return recipes.slice().sort(function(a,b){
+        if(key==="channel") return (a.channel||"").localeCompare(b.channel||"","ja");
+        var av=a[key]||0, bv=b[key]||0;
+        if(key==="added_at"||key==="upload_date") return (bv>av?1:bv<av?-1:0);
+        return bv-av;
+      });
+    }
+
+    function getFiltered(){
+      var q=currentQuery;
+      var list=q?allRecipes.filter(function(r){
+        return r.title.toLowerCase().includes(q)||(r.channel||"").toLowerCase().includes(q)||(r.tags||[]).some(function(t){return t.toLowerCase().includes(q);});
+      }):allRecipes;
+      return sortRecipes(list, currentSort);
+    }
+
     function renderGrid(recipes){
-      const grid=document.getElementById("recipe-grid"),empty=document.getElementById("empty-state");
+      var grid=document.getElementById("recipe-grid"),empty=document.getElementById("empty-state");
       document.getElementById("recipe-count").textContent="("+allRecipes.length+")";
       if(!recipes.length){grid.innerHTML="";empty.style.display="block";return;}
       empty.style.display="none";
       grid.innerHTML=recipes.map(function(r){
         var th=r.thumbnail?"<img src=\""+r.thumbnail+"\" alt=\""+esc(r.title)+"\" loading=\"lazy\" onerror=\"this.style.display='none'\">":"";
-        var dur=r.duration?"<span>⏱ "+r.duration+"</span>":"";
+        var meta="<span>📺 "+esc(r.channel||"")+"</span>";
+        if(r.duration) meta+="<span>⏱ "+r.duration+"</span>";
+        if(r.view_count) meta+="<span>▶ "+fmtNum(r.view_count)+"回</span>";
+        if(r.like_count) meta+="<span>👍 "+fmtNum(r.like_count)+"</span>";
+        meta+="<span>📅 "+(r.added_at||"")+"</span>";
         var tags=(r.tags||[]).slice(0,4).map(function(t){return"<span class='tag'>"+esc(t)+"</span>";}).join("");
         return"<a class='recipe-card' href='recipes/"+r.id+".html'>"+th
           +"<div class='card-body'><div class='card-title'>"+esc(r.title)+"</div>"
-          +"<div class='card-meta'><span>📺 "+esc(r.channel||"")+"</span>"+dur+"<span>📅 "+(r.added_at||"")+"</span></div>"
+          +"<div class='card-meta'>"+meta+"</div>"
           +"<div class='card-tags'>"+tags+"</div></div></a>";
       }).join("");
     }
+
     document.getElementById("search").addEventListener("input",function(e){
-      var q=e.target.value.toLowerCase();
-      renderGrid(allRecipes.filter(function(r){
-        return r.title.toLowerCase().includes(q)||(r.channel||"").toLowerCase().includes(q)||(r.tags||[]).some(function(t){return t.toLowerCase().includes(q);});
-      }));
+      currentQuery=e.target.value.toLowerCase();
+      renderGrid(getFiltered());
     });
-    renderGrid(allRecipes);
+
+    document.querySelectorAll(".sort-btn").forEach(function(btn){
+      btn.addEventListener("click",function(){
+        document.querySelectorAll(".sort-btn").forEach(function(b){b.classList.remove("active");});
+        btn.classList.add("active");
+        currentSort=btn.dataset.sort;
+        renderGrid(getFiltered());
+      });
+    });
+
+    renderGrid(getFiltered());
   </script>
 </body>
 </html>
