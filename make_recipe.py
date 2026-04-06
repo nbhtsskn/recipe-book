@@ -79,23 +79,6 @@ def build_html(r):
         f'<ul class="steps-list">{"".join(cards)}</ul></div>'
     ) if cards else ""
 
-    # 概要欄
-    desc_html = (
-        f'<div class="description-section"><h2>📝 概要欄 / Description</h2>'
-        f'<div class="description-content">{esc(r["description"])}</div></div>'
-    ) if r.get("description") else ""
-
-    # 字幕
-    subs = r.get("subtitles", {})
-    if subs:
-        tabs   = "".join(f'<button class="lang-tab" data-lang="{esc(l)}" onclick="showLang(\'{esc(l)}\')">{esc(l.upper())}</button>' for l in subs)
-        panels = "".join(f'<div class="lang-panel" id="lang-{esc(l)}" style="display:none"><div class="subtitle-content">{esc(t)}</div></div>' for l,t in subs.items())
-        sub_html = (
-            f'<div class="subtitle-section"><h2>💬 字幕 / Subtitles</h2>'
-            f'<div class="subtitle-lang-tabs">{tabs}</div>{panels}</div>'
-        )
-    else:
-        sub_html = ""
 
     return f"""<!DOCTYPE html>
 <html lang="ja">
@@ -122,21 +105,7 @@ def build_html(r):
       </div>
     </div>
     <div class="recipe-sections">{ing_html}{step_html}</div>
-    {desc_html}
-    {sub_html}
   </div>
-  <script>
-    function showLang(lang) {{
-      document.querySelectorAll(".lang-panel").forEach(p => p.style.display = "none");
-      document.querySelectorAll(".lang-tab").forEach(t => t.classList.remove("active"));
-      const p = document.getElementById("lang-" + lang);
-      if (p) p.style.display = "block";
-      const t = document.querySelector('.lang-tab[data-lang="' + lang + '"]');
-      if (t) t.classList.add("active");
-    }}
-    const first = document.querySelector(".lang-tab");
-    if (first) showLang(first.dataset.lang);
-  </script>
 </body>
 </html>"""
 
