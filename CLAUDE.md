@@ -28,6 +28,8 @@ pending.jsonのIDを順番に処理する。各IDに対して以下を実行：
 # Read: c:/Users/sasak/project/batch_data/{video_id}/subtitles.json (または subtitles/{lang}キー)
 ```
 
+meta.json には `view_count`・`like_count`・`upload_date`（YYYY-MM-DD形式）が含まれるので、そのまま使用する。
+
 内容を分析し、通常の1本処理と同じスキーマでJSONを作成して
 `c:/Users/sasak/project/recipes/{video_id}.json` に保存する。
 
@@ -64,18 +66,23 @@ python -c "import shutil; shutil.rmtree('c:/Users/sasak/project/batch_data', ign
 
 ### Step 0: 登録済みチェック（必須）
 
-URLから動画IDを抽出してrecipes.jsonに存在するか確認する。
+URLから動画IDを抽出し、各レシピJSONの `url` フィールドと照合して確認する。
 
 ```bash
 python -c "
-import json, re, sys
+import json, re, os, glob
 url = '<URL>'
-vid = re.search(r'v=([^&]+)', url)
-if not vid: vid = re.search(r'youtu\.be/([^?]+)', url)
-vid = vid.group(1) if vid else ''
-with open('c:/Users/sasak/project/recipes/recipes.json', encoding='utf-8') as f:
-    ids = {r['id'] for r in json.load(f)}
-print('SKIP' if vid in ids else 'OK', vid)
+m = re.search(r'(?:v=|youtu\.be/)([^&?/]+)', url)
+vid = m.group(1) if m else ''
+existing = set()
+for f in glob.glob('c:/Users/sasak/project/recipes/*.json'):
+    if f.endswith('recipes.json'): continue
+    try:
+        d = json.load(open(f, encoding='utf-8'))
+        mu = re.search(r'(?:v=|youtu\.be/)([^&?/]+)', d.get('url','') or d.get('webpage_url',''))
+        if mu: existing.add(mu.group(1))
+    except: pass
+print('SKIP' if vid in existing else 'OK', vid)
 "
 ```
 
@@ -96,8 +103,10 @@ python -c "
 import json
 with open('c:/Users/sasak/project/video_info.json','r',encoding='utf-8') as f:
     d=json.load(f)
+ud=d.get('upload_date','')
+if ud and len(ud)==8 and '-' not in ud: ud=f'{ud[:4]}-{ud[4:6]}-{ud[6:]}'
 with open('c:/Users/sasak/project/video_meta.json','w',encoding='utf-8') as f:
-    json.dump({'title':d.get('title',''),'channel':d.get('uploader',''),'duration':d.get('duration',''),'thumbnail':d.get('thumbnail',''),'upload_date':d.get('upload_date',''),'description':d.get('description','')[:5000]},f,ensure_ascii=False,indent=2)
+    json.dump({'title':d.get('title',''),'channel':d.get('uploader',''),'duration':d.get('duration',''),'thumbnail':d.get('thumbnail',''),'upload_date':ud,'view_count':d.get('view_count'),'like_count':d.get('like_count'),'description':d.get('description','')[:5000]},f,ensure_ascii=False,indent=2)
 "
 ```
 
@@ -127,9 +136,12 @@ yt-dlp --skip-download --write-auto-subs --sub-format vtt --sub-langs "ja,en,zh,
   "url": "https://www.youtube.com/watch?v=動画ID",
   "thumbnail": "サムネイルURL（video_info.jsonから取得）",
   "duration": "M:SS または H:MM:SS",
-  "upload_date": "YYYY-MM-DD",
+  "duration_seconds": 秒数（整数）,
+  "upload_date": "YYYY-MM-DD（video_meta.jsonから取得。8桁の場合は変換済み）",
   "added_at": "今日の日付 YYYY-MM-DD",
   "tags": ["タグ1", "タグ2"],
+  "view_count": 再生回数（video_meta.jsonから取得。整数またはnull）,
+  "like_count": 高評価数（video_meta.jsonから取得。整数またはnull）,
   "description": "概要欄の全文",
   "ingredients": [
     {"name": "材料名", "amount": "分量"}

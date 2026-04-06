@@ -13,9 +13,20 @@ RECIPES_DIR = os.path.join(PROJECT_DIR, "recipes")
 
 
 def get_existing_ids():
-    index_path = os.path.join(RECIPES_DIR, "recipes.json")
-    with open(index_path, encoding="utf-8") as f:
-        return {r["id"] for r in json.load(f)}
+    ids = set()
+    for fname in os.listdir(RECIPES_DIR):
+        if not fname.endswith(".json") or fname == "recipes.json":
+            continue
+        try:
+            with open(os.path.join(RECIPES_DIR, fname), encoding="utf-8") as f:
+                d = json.load(f)
+            url = d.get("url") or d.get("webpage_url", "")
+            m = re.search(r"(?:v=|youtu\.be/)([^&?/]+)", url)
+            if m:
+                ids.add(m.group(1))
+        except Exception:
+            pass
+    return ids
 
 
 def get_playlist_ids(url):
@@ -55,13 +66,18 @@ def fetch_video(video_id, existing_ids):
         return False
 
     info = json.loads(result.stdout)
+    ud = info.get("upload_date", "")
+    if ud and len(ud) == 8 and "-" not in ud:
+        ud = f"{ud[:4]}-{ud[4:6]}-{ud[6:]}"
     meta = {
         "id": info["id"],
         "title": info.get("title", ""),
         "channel": info.get("uploader", "") or info.get("channel", ""),
         "duration": info.get("duration", 0),
         "thumbnail": info.get("thumbnail", ""),
-        "upload_date": info.get("upload_date", ""),
+        "upload_date": ud,
+        "view_count": info.get("view_count"),
+        "like_count": info.get("like_count"),
         "tags": (info.get("tags") or [])[:10],
         "description": info.get("description", "") or "",
         "webpage_url": info.get("webpage_url", url),
