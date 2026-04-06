@@ -62,6 +62,26 @@ python -c "import shutil; shutil.rmtree('c:/Users/sasak/project/batch_data', ign
 
 以下の手順を必ず順番通りに実行すること。
 
+### Step 0: 登録済みチェック（必須）
+
+URLから動画IDを抽出してrecipes.jsonに存在するか確認する。
+
+```bash
+python -c "
+import json, re, sys
+url = '<URL>'
+vid = re.search(r'v=([^&]+)', url)
+if not vid: vid = re.search(r'youtu\.be/([^?]+)', url)
+vid = vid.group(1) if vid else ''
+with open('c:/Users/sasak/project/recipes/recipes.json', encoding='utf-8') as f:
+    ids = {r['id'] for r in json.load(f)}
+print('SKIP' if vid in ids else 'OK', vid)
+"
+```
+
+**「SKIP」と表示された場合** → 「このレシピはすでに登録済みです（ID: xxx）」とユーザーに伝えて処理を中断する。
+**「OK」と表示された場合** → Step 1へ進む。
+
 ### Step 1: 動画情報を取得
 
 ```bash
