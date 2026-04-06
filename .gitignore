@@ -1,0 +1,5 @@
+video_info.json
+video_meta.json
+subtitles/
+__pycache__/
+*.pyc

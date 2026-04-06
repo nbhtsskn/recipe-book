@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Recipe Book</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>🍳 My Recipe Book</h1>
+    <p>動画から集めたレシピコレクション</p>
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="レシピを検索... / Search recipes...">
+    </div>
+  </header>
+  <main class="main-content">
+    <p class="section-title">レシピ一覧 <span id="recipe-count"></span></p>
+    <div class="recipe-grid" id="recipe-grid"></div>
+    <div class="empty-state" id="empty-state" style="display:none">
+      <div class="icon">📭</div>
+      <p>レシピが見つかりません</p>
+    </div>
+  </main>
+  <script>
+    const allRecipes = [
+  {
+    "id": "EmCPHumbMvo",
+    "title": "料理研究家が本気で作る「至高の炒飯」",
+    "channel": "料理研究家リュウジのバズレシピ",
+    "thumbnail": "https://i.ytimg.com/vi/EmCPHumbMvo/maxresdefault.jpg",
+    "duration": "13:30",
+    "added_at": "2026-04-06",
+    "tags": [
+      "炒飯",
+      "チャーハン",
+      "中華",
+      "リュウジ",
+      "バズレシピ",
+      "至高シリーズ"
+    ],
+    "url": "https://www.youtube.com/watch?v=EmCPHumbMvo"
+  }
+];
+
+    function escapeHtml(str) {
+      return String(str || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+    }
+
+    function renderGrid(recipes) {
+      const grid = document.getElementById("recipe-grid");
+      const empty = document.getElementById("empty-state");
+      document.getElementById("recipe-count").textContent = "(" + allRecipes.length + ")";
+      if (recipes.length === 0) {
+        grid.innerHTML = "";
+        empty.style.display = "block";
+        return;
+      }
+      empty.style.display = "none";
+      grid.innerHTML = recipes.map(function(r) {
+        var thumb = r.thumbnail ? '<img src="' + r.thumbnail + '" alt="' + escapeHtml(r.title) + '" loading="lazy" onerror="this.style.display=\'none\'">' : "";
+        var dur = r.duration ? "<span>⏱ " + r.duration + "</span>" : "";
+        var tags = (r.tags || []).slice(0, 4).map(function(t) { return '<span class="tag">' + escapeHtml(t) + "</span>"; }).join("");
+        return '<a class="recipe-card" href="recipes/' + r.id + '.html">'
+          + thumb
+          + '<div class="card-body">'
+          + '<div class="card-title">' + escapeHtml(r.title) + "</div>"
+          + '<div class="card-meta"><span>📺 ' + escapeHtml(r.channel || "") + "</span>" + dur + '<span>📅 ' + (r.added_at || "") + "</span></div>"
+          + '<div class="card-tags">' + tags + "</div>"
+          + "</div></a>";
+      }).join("");
+    }
+
+    document.getElementById("search").addEventListener("input", function(e) {
+      var q = e.target.value.toLowerCase();
+      var filtered = allRecipes.filter(function(r) {
+        return r.title.toLowerCase().includes(q)
+          || (r.channel || "").toLowerCase().includes(q)
+          || (r.tags || []).some(function(t) { return t.toLowerCase().includes(q); });
+      });
+      renderGrid(filtered);
+    });
+
+    renderGrid(allRecipes);
+  </script>
+</body>
+</html>
