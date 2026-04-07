@@ -23,14 +23,17 @@
       <button class="sort-btn" data-sort="upload_date">投稿日</button>
       <button class="sort-btn" data-sort="channel">チャンネル</button>
       <button class="sort-btn" data-sort="duration_seconds">動画時間</button>
-      <button class="random-btn" id="random-btn">🎲 ランダム</button>
-    </div>
-    <div class="channel-filter">
-      <div class="channel-filter-header" id="channel-filter-header">
-        <span class="channel-filter-label">チャンネル</span>
-        <span class="channel-filter-toggle" id="channel-filter-toggle">▲</span>
+      <span class="sort-label" style="margin-left:0.5rem">フィルタ：</span>
+      <div class="filter-wrap">
+        <button class="filter-btn" id="filter-btn">チャンネル ▼</button>
+        <div class="filter-popout" id="filter-popout">
+          <div class="filter-popout-actions">
+            <button id="filter-all">すべて選択</button>
+            <button id="filter-none">すべて解除</button>
+          </div>
+        </div>
       </div>
-      <div class="channel-filter-body" id="channel-filter"></div>
+      <button class="random-btn" id="random-btn">🎲 ランダム</button>
     </div>
     <p class="section-title">レシピ一覧 <span id="recipe-count"></span></p>
     <div class="recipe-grid" id="recipe-grid"></div>
@@ -5214,7 +5217,14 @@
     function buildChannelFilter(){
       var channels=[...new Set(allRecipes.map(function(r){return r.channel||"";}))].filter(Boolean).sort(function(a,b){return a.localeCompare(b,"ja");});
       channels.forEach(function(ch){selectedChannels.add(ch);});
-      var container=document.getElementById("channel-filter");
+      var popout=document.getElementById("filter-popout");
+      var btn=document.getElementById("filter-btn");
+      var allCount=channels.length;
+      function updateFilterBtn(){
+        var n=selectedChannels.size;
+        btn.textContent=n===allCount?"チャンネル ▼":"チャンネル ("+n+"/"+allCount+") ▼";
+        btn.classList.toggle("filtered",n!==allCount);
+      }
       channels.forEach(function(ch){
         var lbl=document.createElement("label");
         lbl.className="channel-cb checked";
@@ -5226,15 +5236,35 @@
           e.preventDefault();
           if(selectedChannels.has(ch)){selectedChannels.delete(ch);lbl.classList.remove("checked");cb.checked=false;}
           else{selectedChannels.add(ch);lbl.classList.add("checked");cb.checked=true;}
+          updateFilterBtn();
           renderGrid(getFiltered());
         });
-        container.appendChild(lbl);
+        popout.appendChild(lbl);
       });
-      var header=document.getElementById("channel-filter-header");
-      var toggle=document.getElementById("channel-filter-toggle");
-      header.addEventListener("click",function(){
-        container.classList.toggle("collapsed");
-        toggle.classList.toggle("open");
+      btn.addEventListener("click",function(e){
+        e.stopPropagation();
+        popout.classList.toggle("open");
+      });
+      document.addEventListener("click",function(e){
+        if(!popout.contains(e.target)&&e.target!==btn) popout.classList.remove("open");
+      });
+      document.getElementById("filter-all").addEventListener("click",function(){
+        channels.forEach(function(ch){
+          selectedChannels.add(ch);
+          popout.querySelectorAll(".channel-cb").forEach(function(l){
+            if(l.querySelector("input").value===ch){l.classList.add("checked");l.querySelector("input").checked=true;}
+          });
+        });
+        updateFilterBtn(); renderGrid(getFiltered());
+      });
+      document.getElementById("filter-none").addEventListener("click",function(){
+        channels.forEach(function(ch){
+          selectedChannels.delete(ch);
+          popout.querySelectorAll(".channel-cb").forEach(function(l){
+            if(l.querySelector("input").value===ch){l.classList.remove("checked");l.querySelector("input").checked=false;}
+          });
+        });
+        updateFilterBtn(); renderGrid(getFiltered());
       });
     }
 

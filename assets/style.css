@@ -125,6 +125,90 @@ body {
 }
 .sort-btn:hover { border-color: var(--accent); color: var(--accent); }
 .sort-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.random-btn {
+  padding: 0.3rem 0.9rem;
+  border-radius: 20px;
+  border: 2px solid var(--accent);
+  background: var(--accent);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fff;
+  transition: all 0.15s;
+  margin-left: auto;
+}
+.random-btn:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+
+.filter-wrap { position: relative; }
+.filter-btn {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  background: var(--card-bg);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.filter-btn.filtered { background: var(--accent); border-color: var(--accent); color: #fff; }
+.filter-popout {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+  padding: 0.6rem 0.8rem;
+  z-index: 100;
+  min-width: 200px;
+  max-height: 320px;
+  overflow-y: auto;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.filter-popout.open { display: flex; }
+.filter-popout-actions {
+  display: flex;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.2rem;
+  border-bottom: 1px solid var(--border);
+}
+.filter-popout-actions button {
+  font-size: 0.75rem;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-weight: 600;
+}
+.filter-popout-actions button:hover { text-decoration: underline; }
+.channel-cb {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 0.25rem 0.7rem;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  background: var(--card-bg);
+  color: var(--muted);
+  font-weight: 600;
+  user-select: none;
+  transition: all 0.15s;
+}
+.channel-cb.checked {
+  background: #f5ece0;
+  border-color: var(--accent);
+  color: var(--accent-dark);
+}
+.channel-cb input[type="checkbox"] { display: none; }
 
 .empty-state {
   text-align: center;
