@@ -25,6 +25,9 @@
       <button class="sort-btn" data-sort="duration_seconds">動画時間</button>
       <button class="random-btn" id="random-btn">🎲 ランダム</button>
     </div>
+    <div class="channel-filter" id="channel-filter">
+      <span class="channel-filter-label">チャンネル：</span>
+    </div>
     <p class="section-title">レシピ一覧 <span id="recipe-count"></span></p>
     <div class="recipe-grid" id="recipe-grid"></div>
     <div class="empty-state" id="empty-state" style="display:none">
@@ -5139,6 +5142,7 @@
 ];
     var currentSort = "added_at";
     var currentQuery = "";
+    var selectedChannels = new Set();
 
     function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 
@@ -5159,17 +5163,40 @@
       });
     }
 
+    function buildChannelFilter(){
+      var channels=[...new Set(allRecipes.map(function(r){return r.channel||"";}))].filter(Boolean).sort(function(a,b){return a.localeCompare(b,"ja");});
+      channels.forEach(function(ch){selectedChannels.add(ch);});
+      var container=document.getElementById("channel-filter");
+      channels.forEach(function(ch){
+        var lbl=document.createElement("label");
+        lbl.className="channel-cb checked";
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=true; cb.value=ch;
+        lbl.appendChild(cb);
+        lbl.appendChild(document.createTextNode(ch));
+        lbl.addEventListener("click",function(e){
+          e.preventDefault();
+          if(selectedChannels.has(ch)){selectedChannels.delete(ch);lbl.classList.remove("checked");cb.checked=false;}
+          else{selectedChannels.add(ch);lbl.classList.add("checked");cb.checked=true;}
+          renderGrid(getFiltered());
+        });
+        container.appendChild(lbl);
+      });
+    }
+
     function getFiltered(){
       var q=currentQuery;
-      var list=q?allRecipes.filter(function(r){
+      var list=allRecipes.filter(function(r){
+        if(!selectedChannels.has(r.channel||"")) return false;
+        if(!q) return true;
         return r.title.toLowerCase().includes(q)||(r.channel||"").toLowerCase().includes(q)||(r.tags||[]).some(function(t){return t.toLowerCase().includes(q);});
-      }):allRecipes;
+      });
       return sortRecipes(list, currentSort);
     }
 
     function renderGrid(recipes){
       var grid=document.getElementById("recipe-grid"),empty=document.getElementById("empty-state");
-      document.getElementById("recipe-count").textContent="("+allRecipes.length+")";
+      document.getElementById("recipe-count").textContent="("+recipes.length+")";
       if(!recipes.length){grid.innerHTML="";empty.style.display="block";return;}
       empty.style.display="none";
       grid.innerHTML=recipes.map(function(r){
@@ -5208,6 +5235,7 @@
       window.location.href="recipes/"+r.id+".html";
     });
 
+    buildChannelFilter();
     renderGrid(getFiltered());
   </script>
 </body>
