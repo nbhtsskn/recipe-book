@@ -129,8 +129,13 @@ def rebuild_index(index):
     html += '  <header class="site-header">\n'
     html += '    <h1>🍳 My Recipe Book</h1>\n'
     html += '    <p>動画から集めたレシピコレクション</p>\n'
-    html += '    <div class="search-bar">\n'
-    html += '      <input type="text" id="search" placeholder="レシピを検索... / Search recipes...">\n'
+    html += '    <div class="search-bars">\n'
+    html += '      <div class="search-bar">\n'
+    html += '        <input type="text" id="search" placeholder="レシピ名・チャンネル・タグで検索...">\n'
+    html += '      </div>\n'
+    html += '      <div class="search-bar">\n'
+    html += '        <input type="text" id="search-ingredient" placeholder="材料で検索（例：鶏肉、じゃがいも）...">\n'
+    html += '      </div>\n'
     html += '    </div>\n'
     html += '  </header>\n'
     html += '  <main class="main-content">\n'
@@ -165,6 +170,7 @@ def rebuild_index(index):
     html += '    const allRecipes = ' + recipes_js + ';\n'
     html += '    var currentSort = "added_at";\n'
     html += '    var currentQuery = "";\n'
+    html += '    var currentIngredientQuery = "";\n'
     html += '    var selectedChannels = new Set();\n'
     html += '\n'
     html += '    function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}\n'
@@ -243,10 +249,12 @@ def rebuild_index(index):
     html += '\n'
     html += '    function getFiltered(){\n'
     html += '      var q=currentQuery;\n'
+    html += '      var iq=currentIngredientQuery;\n'
     html += '      var list=allRecipes.filter(function(r){\n'
     html += '        if(!selectedChannels.has(r.channel||"")) return false;\n'
-    html += '        if(!q) return true;\n'
-    html += '        return r.title.toLowerCase().includes(q)||(r.channel||"").toLowerCase().includes(q)||(r.tags||[]).some(function(t){return t.toLowerCase().includes(q);});\n'
+    html += '        if(q&&!r.title.toLowerCase().includes(q)&&!(r.channel||"").toLowerCase().includes(q)&&!(r.tags||[]).some(function(t){return t.toLowerCase().includes(q);})) return false;\n'
+    html += '        if(iq&&!(r.ingredient_names||[]).some(function(n){return n.toLowerCase().includes(iq);})) return false;\n'
+    html += '        return true;\n'
     html += '      });\n'
     html += '      return sortRecipes(list, currentSort);\n'
     html += '    }\n'
@@ -273,6 +281,10 @@ def rebuild_index(index):
     html += '\n'
     html += '    document.getElementById("search").addEventListener("input",function(e){\n'
     html += '      currentQuery=e.target.value.toLowerCase();\n'
+    html += '      renderGrid(getFiltered());\n'
+    html += '    });\n'
+    html += '    document.getElementById("search-ingredient").addEventListener("input",function(e){\n'
+    html += '      currentIngredientQuery=e.target.value.toLowerCase();\n'
     html += '      renderGrid(getFiltered());\n'
     html += '    });\n'
     html += '\n'
@@ -313,6 +325,7 @@ def save_recipe(recipe):
     with open(index_path, encoding="utf-8") as f:
         index = json.load(f)
     entry = {k: recipe.get(k) for k in ("id","title","channel","thumbnail","duration","duration_seconds","added_at","upload_date","tags","url","view_count","like_count")}
+    entry["ingredient_names"] = [ing["name"] for ing in (recipe.get("ingredients") or [])]
     ids = [r["id"] for r in index]
     if vid in ids:
         index = [entry if r["id"] == vid else r for r in index]
