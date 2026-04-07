@@ -1,0 +1,110 @@
+{
+  "id": "Wa1Pau9YTtA",
+  "title": "Filipino Style Spaghetti Recipe",
+  "channel": "Panlasang Pinoy",
+  "url": "https://www.youtube.com/watch?v=Wa1Pau9YTtA",
+  "thumbnail": "https://i.ytimg.com/vi/Wa1Pau9YTtA/maxresdefault.jpg",
+  "duration": "12:41",
+  "duration_seconds": 761,
+  "upload_date": "2023-10-27",
+  "added_at": "2026-04-07",
+  "view_count": 3195257,
+  "like_count": 35981,
+  "tags": [
+    "フィリピン料理",
+    "スパゲッティ",
+    "ホットドッグ",
+    "甘口",
+    "パーティー料理",
+    "Panlasang Pinoy"
+  ],
+  "description": "This is my latest version of Pinoy Spaghetti. Make this for Christmas and any day that you feel like having it. It's super easy and delicious!\n\nIngredients:\n1 lb. spaghetti\n1 lb. ground pork\n1 Knorr Pork Cube\n3 tablespoons liver spread\n12 hotdogs, sliced\n35 ounces Filipino Style Spaghetti Sauce\n1 tablespoon all-purpose flour\n1 cup water\n1 yellow onion, minced\n3 cloves garlic, minced\n3 tablespoons cooking oil\nSalt and ground black pepper to taste",
+  "ingredients": [
+    {
+      "name": "スパゲッティ",
+      "amount": "1 lb（約450g）"
+    },
+    {
+      "name": "豚ひき肉",
+      "amount": "1 lb（約450g）"
+    },
+    {
+      "name": "ホットドッグ（スライス）",
+      "amount": "12本"
+    },
+    {
+      "name": "フィリピンスタイルスパゲッティソース",
+      "amount": "35 oz（約1kg）"
+    },
+    {
+      "name": "レバースプレッド",
+      "amount": "大さじ3"
+    },
+    {
+      "name": "Knorrポークキューブ",
+      "amount": "1個"
+    },
+    {
+      "name": "薄力粉",
+      "amount": "大さじ1"
+    },
+    {
+      "name": "水",
+      "amount": "1カップ"
+    },
+    {
+      "name": "黄玉ねぎ（みじん切り）",
+      "amount": "1個"
+    },
+    {
+      "name": "にんにく（みじん切り）",
+      "amount": "3片"
+    },
+    {
+      "name": "サラダ油",
+      "amount": "大さじ3"
+    },
+    {
+      "name": "塩・黒胡椒",
+      "amount": "各適量"
+    }
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "text": "スパゲッティを袋の表示通りに茹でて水気を切り、置いておく。",
+      "point": "アルデンテより少し硬めに茹でておくのがポイント。後でソースと合わせる際にさらに火が入るため、茹ですぎると柔らかくなりすぎる。"
+    },
+    {
+      "step": 2,
+      "text": "フライパンに油大さじ3を熱し、にんにくを炒めて香りを出したら玉ねぎを加えて透明になるまで炒める。",
+      "point": "にんにくを先に炒めて香りを油に移してから玉ねぎを加えることで、ソース全体に風味の土台が作られる。玉ねぎはしっかり炒めて甘みを引き出す。"
+    },
+    {
+      "step": 3,
+      "text": "豚ひき肉を加えて褐色になるまでよく炒める。",
+      "point": "ひき肉をしっかり炒めてメイラード反応を起こすことで旨味が増す。余分な脂が出たら取り除くとソースがくどくなりにくい。"
+    },
+    {
+      "step": 4,
+      "text": "レバースプレッド大さじ3、Knorrポークキューブ1個を加えて混ぜ、薄力粉大さじ1を加えてよくなじませる。",
+      "point": "レバースプレッドはフィリピンスタイルスパゲッティの最大の特徴的な材料。コクと深みをソースに加える。薄力粉がソース全体のとろみを均一にする役割を果たす。"
+    },
+    {
+      "step": 5,
+      "text": "フィリピンスタイルスパゲッティソース35oz と水1カップを加えて弱火でよく混ぜながら煮込む。",
+      "point": "フィリピンスタイルのソースはバナナケチャップを使った甘口が特徴。煮込むことで各食材の風味が一体化する。焦がさないよう弱火で丁寧に混ぜることが大切。"
+    },
+    {
+      "step": 6,
+      "text": "スライスしたホットドッグ12本を加えてさらに煮込み、塩と黒胡椒で味を調える。",
+      "point": "ホットドッグはフィリピンスタイルスパゲッティの定番具材。ホットドッグの塩気と風味がソースに溶け込んで独特の甘辛い味わいを作る。クリスマスや誕生日など祝いの席の定番料理。"
+    },
+    {
+      "step": 7,
+      "text": "茹でたスパゲッティにソースをかけてよく混ぜ合わせ、完成。",
+      "point": "パーティーでは麺とソースを別々に出してその場で混ぜるスタイルも一般的。甘くてこってりしたフィリピンスタイルは子供から大人まで幅広く愛される味わいで、日本のナポリタンに通じる親しみやすさがある。"
+    }
+  ],
+  "subtitles": {}
+}
