@@ -25,8 +25,12 @@
       <button class="sort-btn" data-sort="duration_seconds">動画時間</button>
       <button class="random-btn" id="random-btn">🎲 ランダム</button>
     </div>
-    <div class="channel-filter" id="channel-filter">
-      <span class="channel-filter-label">チャンネル：</span>
+    <div class="channel-filter">
+      <div class="channel-filter-header" id="channel-filter-header">
+        <span class="channel-filter-label">チャンネル</span>
+        <span class="channel-filter-toggle" id="channel-filter-toggle">▲</span>
+      </div>
+      <div class="channel-filter-body" id="channel-filter"></div>
     </div>
     <p class="section-title">レシピ一覧 <span id="recipe-count"></span></p>
     <div class="recipe-grid" id="recipe-grid"></div>
@@ -5181,6 +5185,12 @@
           renderGrid(getFiltered());
         });
         container.appendChild(lbl);
+      });
+      var header=document.getElementById("channel-filter-header");
+      var toggle=document.getElementById("channel-filter-toggle");
+      header.addEventListener("click",function(){
+        container.classList.toggle("collapsed");
+        toggle.classList.toggle("open");
       });
     }
 
